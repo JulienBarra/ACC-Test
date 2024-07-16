@@ -1,0 +1,72 @@
+[
+  {
+    "Id": 1,
+    "Nom": "Ordinateur Portable",
+    "Référence": "OP12345",
+    "Prix": 799.99,
+    "Note": 4
+  },
+  {
+    "Id": 2,
+    "Nom": "Smartphone",
+    "Référence": "SM67890",
+    "Prix": 599.99,
+    "Note": 4
+  },
+  {
+    "Id": 3,
+    "Nom": "Tablette",
+    "Référence": "TB11223",
+    "Prix": 299.99,
+    "Note": 3
+  },
+  {
+    "Id": 4,
+    "Nom": "Casque Audio",
+    "Référence": "CA33445",
+    "Prix": 149.99,
+    "Note": 1
+  },
+  {
+    "Id": 5,
+    "Nom": "Souris sans fil",
+    "Référence": "SS55667",
+    "Prix": 29.99,
+    "Note": 4
+  },
+  {
+    "Id": 6,
+    "Nom": "Clavier Mécanique",
+    "Référence": "CM77889",
+    "Prix": 89.99,
+    "Note": 2
+  },
+  {
+    "Id": 7,
+    "Nom": "Écran 24 pouces",
+    "Référence": "E241010",
+    "Prix": 199.99,
+    "Note": 3
+  },
+  {
+    "Id": 8,
+    "Nom": "Imprimante Multifonction",
+    "Référence": "IM121314",
+    "Prix": 149.99,
+    "Note": 1
+  },
+  {
+    "Id": 9,
+    "Nom": "Disque Dur Externe",
+    "Référence": "DDE151617",
+    "Prix": 79.99,
+    "Note": 5
+  },
+  {
+    "Id": 10,
+    "Nom": "Clé USB 128 Go",
+    "Référence": "USB181920",
+    "Prix": 19.99,
+    "Note": 2
+  }
+]
