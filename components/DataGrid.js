@@ -149,7 +149,7 @@ const ProductDataGrid = () => {
   ];
 
   return (
-    <div style={{ height: 600, width: "100%" }}>
+    <div style={{ height: "100%", width: "100%" }}>
       <Button
         startIcon={<AddIcon />}
         onClick={handleAddClick}
