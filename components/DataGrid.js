@@ -1,22 +1,29 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DataGrid, GridActionsCellItem, GridRowModes } from "@mui/x-data-grid";
-import productsData from "../data/productsData.json";
-import Button from "@mui/material/Button";
+import { Button } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/DeleteOutlined";
 import SaveIcon from "@mui/icons-material/Save";
 import CancelIcon from "@mui/icons-material/Close";
 import { Rating } from "@mui/material";
-
-const initialRows = productsData.map((product, index) => ({
-  id: index,
-  ...product,
-}));
+import { useDispatch, useSelector } from "react-redux";
+import {
+  initializeProducts,
+  addProductToStore,
+  updateProductInStore,
+  deleteProductFromStore,
+} from "../reducers/products";
+import productsData from "../data/productsData.json";
 
 const ProductDataGrid = () => {
-  const [rows, setRows] = useState(initialRows);
+  const dispatch = useDispatch();
+  const rows = useSelector((state) => state.products.value);
   const [rowModesModel, setRowModesModel] = useState({});
+
+  useEffect(() => {
+    dispatch(initializeProducts(productsData));
+  }, []);
 
   const handleEditClick = (id) => () => {
     setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
@@ -31,31 +38,26 @@ const ProductDataGrid = () => {
       ...rowModesModel,
       [id]: { mode: GridRowModes.View, ignoreModifications: true },
     });
-
-    const editedRow = rows.find((row) => row.id === id);
-    if (editedRow.isNew) {
-      setRows(rows.filter((row) => row.id !== id));
-    }
   };
 
   const handleDeleteClick = (id) => () => {
-    setRows(rows.filter((row) => row.id !== id));
+    dispatch(deleteProductFromStore(id));
   };
 
   const handleAddClick = () => {
-    const id = rows.length ? rows[rows.length - 1].id + 1 : 0;
-    setRows([
-      ...rows,
-      { id, Nom: "", Référence: "", Prix: 0, Note: 0, isNew: true },
-    ]);
-    setRowModesModel({ ...rowModesModel, [id]: { mode: GridRowModes.Edit } });
+    const newId = rows.length ? Math.max(...rows.map((row) => row.id)) + 1 : 0;
+    dispatch(
+      addProductToStore({ id: newId, Nom: "", Référence: "", Prix: 0, Note: 0 })
+    );
+    setRowModesModel({
+      ...rowModesModel,
+      [newId]: { mode: GridRowModes.Edit },
+    });
   };
 
   const processRowUpdate = (newRow) => {
-    const updatedRows = rows.map((row) =>
-      row.id === newRow.id ? newRow : row
-    );
-    setRows(updatedRows);
+    const { id, ...updatedProduct } = newRow;
+    dispatch(updateProductInStore({ id, updatedProduct }));
     return newRow;
   };
 
@@ -82,7 +84,7 @@ const ProductDataGrid = () => {
   };
 
   const columns = [
-    { field: "Id", headerName: "ID", width: 90 },
+    { field: "id", headerName: "ID", width: 90 },
     { field: "Nom", headerName: "Nom", width: 150, editable: true },
     { field: "Référence", headerName: "Référence", width: 150, editable: true },
     {
@@ -147,7 +149,7 @@ const ProductDataGrid = () => {
   ];
 
   return (
-    <div style={{ height: "100%", width: "100%" }}>
+    <div style={{ height: 600, width: "100%" }}>
       <Button
         startIcon={<AddIcon />}
         onClick={handleAddClick}
@@ -156,7 +158,7 @@ const ProductDataGrid = () => {
         Ajouter une ligne
       </Button>
       <DataGrid
-        rows={rows}
+        rows={rows.map((row) => ({ ...row, id: row.id || Math.random() }))}
         columns={columns}
         pageSize={10}
         rowsPerPageOptions={[10]}
@@ -164,6 +166,7 @@ const ProductDataGrid = () => {
         processRowUpdate={processRowUpdate}
         rowModesModel={rowModesModel}
         onRowModesModelChange={(newModel) => setRowModesModel(newModel)}
+        getRowId={(row) => row.id}
       />
     </div>
   );
